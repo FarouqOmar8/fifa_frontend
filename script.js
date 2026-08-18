@@ -5,57 +5,30 @@ document.addEventListener('DOMContentLoaded', () => {
 
     searchBtn.addEventListener('click', async () => {
         const query = userInput.value.trim();
-        
-        if (!query) {
-            alert('الرجاء إدخال قيمة في مربع البحث');
-            return;
-        }
+        if (!query) return;
 
-        // إظهار دائرة التحميل أثناء انتظار الرد من الخادم
         resultContainer.innerHTML = '<div class="loader"></div>';
 
         try {
-            // قم بتعديل هذا الرابط بناءً على الـ Endpoint الدقيق في الـ API الخاص بك
-            // هنا افترضنا أنه يستقبل باراميتر اسمه `name` أو `query`
-            const apiUrl = `https://fifa-backend-8w1t.onrender.com/search?query=${encodeURIComponent(query)}`;
+            // المسار هنا يجب أن يطابق تماماً ما في البايثون
+            const apiUrl = `https://fifa-backend-8w1t.onrender.com/fifa_gratest_player?player=${encodeURIComponent(query)}`;
             
             const response = await fetch(apiUrl);
-
-            if (!response.ok) {
-                throw new Error('فشل في جلب البيانات من الخادم');
-            }
-
-            /*
-             * الاحتمال الأول: الـ API يعيد رابط الصورة بداخل ملف JSON
-             * مثال: { "imageUrl": "https://example.com/image.png" }
-             */
             const data = await response.json();
-            
-            if (data.imageUrl) {
-                resultContainer.innerHTML = `<img src="${data.imageUrl}" alt="بطاقة فيفا">`;
+
+            // طباعة النتيجة في Console للتشخيص (اضغط F12 في المتصفح لرؤيتها)
+            console.log(data);
+
+            if (data.status === "success") {
+                resultContainer.innerHTML = `
+                    <h3 style="color: #d4af37;">${data.message}</h3>
+                    <img src="${data.image}" style="max-width: 100%; border-radius: 10px;">
+                `;
             } else {
-                resultContainer.innerHTML = '<p class="error-message">لم يتم العثور على صورة لهذه القيمة.</p>';
+                resultContainer.innerHTML = `<p style="color:red;">${data.message || "خطأ في البيانات"}</p>`;
             }
-
-            /* 
-             * الاحتمال الثاني (إذا كان الـ API يرسل الصورة مباشرة كـ File/Blob وليس كـ JSON):
-             * قم بمسح كود "الاحتمال الأول" بالكامل، واستخدم الكود التالي بدلاً منه:
-             * 
-             * const blob = await response.blob();
-             * const imageUrl = URL.createObjectURL(blob);
-             * resultContainer.innerHTML = `<img src="${imageUrl}" alt="بطاقة فيفا">`;
-             */
-
         } catch (error) {
-            console.error('Error:', error);
-            resultContainer.innerHTML = `<p class="error-message">حدث خطأ أثناء جلب الصورة. تأكد من تشغيل الـ API بشكل صحيح.</p>`;
-        }
-    });
-
-    // إضافة ميزة البحث عند الضغط على زر Enter في الكيبورد
-    userInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') {
-            searchBtn.click();
+            resultContainer.innerHTML = `<p style="color:red;">خطأ في الاتصال بالخادم</p>`;
         }
     });
 });
