@@ -19,12 +19,13 @@ document.addEventListener('DOMContentLoaded', () => {
             // طباعة النتيجة في Console للتشخيص (اضغط F12 في المتصفح لرؤيتها)
             console.log(data);
 
-     if (data.status === "congrats") {
+  if (data.status === "congrats") {
             resultContainer.innerHTML = `
                 <pre style="color: #d4af37; font-family: monospace; white-space: pre-wrap; direction: ltr; text-align: left; background: rgba(0,0,0,0.4); padding: 15px; border-radius: 10px; font-size: 12px; line-height: 1.2; overflow-x: auto;">${data.message}</pre>
                 <img src="${data.image}" style="max-width: 100%; border-radius: 10px; margin-top: 15px;">
             `;
         } else {
+            // قمنا هنا بإضافة سطر الصورة أسفل رسالة الخطأ لكي تظهر دائماً
             resultContainer.innerHTML = `
                 <pre style="color: #ff6b6b; font-family: monospace; white-space: pre-wrap; direction: ltr; text-align: left; background: rgba(0,0,0,0.4); padding: 15px; border-radius: 10px; font-size: 12px; line-height: 1.2; overflow-x: auto;">${data.message}</pre>
                 <img src="${data.image}" style="max-width: 100%; border-radius: 10px; margin-top: 15px;">
