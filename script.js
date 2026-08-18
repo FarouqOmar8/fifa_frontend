@@ -19,14 +19,17 @@ document.addEventListener('DOMContentLoaded', () => {
             // طباعة النتيجة في Console للتشخيص (اضغط F12 في المتصفح لرؤيتها)
             console.log(data);
 
-            if (data.status === "success") {
-                resultContainer.innerHTML = `
-                    <h3 style="color: #d4af37;">${data.message}</h3>
-                    <img src="${data.image}" style="max-width: 100%; border-radius: 10px;">
-                `;
-            } else {
-                resultContainer.innerHTML = `<p style="color:red;">${data.message || "خطأ في البيانات"}</p>`;
-            }
+     if (data.status === "congrats") {
+            resultContainer.innerHTML = `
+                <pre style="color: #d4af37; font-family: monospace; white-space: pre-wrap; direction: ltr; text-align: left; background: rgba(0,0,0,0.4); padding: 15px; border-radius: 10px; font-size: 12px; line-height: 1.2; overflow-x: auto;">${data.message}</pre>
+                <img src="${data.image}" style="max-width: 100%; border-radius: 10px; margin-top: 15px;">
+            `;
+        } else {
+            resultContainer.innerHTML = `
+                <pre style="color: #ff6b6b; font-family: monospace; white-space: pre-wrap; direction: ltr; text-align: left; background: rgba(0,0,0,0.4); padding: 15px; border-radius: 10px; font-size: 12px; line-height: 1.2; overflow-x: auto;">${data.message}</pre>
+                <img src="${data.image}" style="max-width: 100%; border-radius: 10px; margin-top: 15px;">
+            `;
+        }
         } catch (error) {
             resultContainer.innerHTML = `<p style="color:red;">خطأ في الاتصال بالخادم</p>`;
         }
